@@ -47,7 +47,7 @@
 //  Options choix du type de GPS
 //--------------------------------------------------------------------------------------------------------
 // Si GPS_quectel ou GPS_ublox  est non defini on suppose que le GPS est initialisé et configuré , liaison à 9600 etc ....
-#define GPS_quectel  //  style Quectel L80  et GPS style base chipset:MediaTek MT3339
+//#define GPS_quectel  //  style Quectel L80  et GPS style base chipset:MediaTek MT3339
 //#define GPS_ublox   // pour Beitian BN-220, BN-180, BN-880 et GPS style base chipset: u-blox M8030-KT 
 
 //--------------------------------------------------------------------------------------------------------
@@ -75,10 +75,10 @@
 // Pour ESP01-C3  , même format que ESP01 mais avec un ESP32-C3
 // LILYGO® TTGO T-01C3 ESP32-C3
 
-#define GPS_RX_PIN 8           // D1 Brancher le fil Tx du GPS .
-#define GPS_TX_PIN 9            // D2 Brancher le fil Rx du GPS .
-#define pinFactoryReset 2
-#define pinLed 3  // optionel. builtin LED du module T-01C3
+//#define GPS_RX_PIN 8           // D1 Brancher le fil Tx du GPS .
+//#define GPS_TX_PIN 9            // D2 Brancher le fil Rx du GPS .
+//#define pinFactoryReset 2
+//#define pinLed 3  // optionel. builtin LED du module T-01C3
 // GSM pas testé sur ce module ....
 //#define GSM_RX 2    //  exemple pour TTGO T-01C3 ESP32-C3 RX du module GSM SIM800L sur pin 2 GPIO2 module: transmssion ver GSM
 //#define GSM_TX 20   //  exemple pour TTGO T-01C3 ESP32-C3 TX du module GSM SIM800L sur pin RX0 du module (pin GPIO20 de ESP32-C3): réception duGSM
@@ -86,21 +86,22 @@
 //#define GSM_TX 20   // vers TX du module GSM SIM800L  U0RX
 // Par defaut Uart 0 est sur pin 20/rx et 21/tx
 // On perdra le debug sur Serial
-#define iBus_RX 20   // vers pin iBus sensor du recepteur Flysky
-#define iBus_TX 21   // vers pin iBus sensor du recepteur Flysky
+//#define iBus_RX 20   // vers pin iBus sensor du recepteur Flysky
+//#define iBus_TX 21   // vers pin iBus sensor du recepteur Flysky
 
 //----------------------------------------------------------------------------------------------------------------------------
 //  Pour module  ESP3-C3-32S-kit  NodeMCU-Series
-/*
-#define GPS_RX_PIN 9             // D1 Brancher le fil Tx du GPS . 
-#define GPS_TX_PIN 10            // D2 Brancher le fil Rx du GPS . 
+
+//#define GPS_RX_PIN 14            // D1 Brancher le fil Tx du GPS . 
+//#define GPS_TX_PIN 15           // D2 Brancher le fil Rx du GPS . 
 //#define GSM_RX 19   // vers RX du module GSM SIM800L
 //#define GSM_TX 18   // vers TX du module GSM SIM800L (ne pas oublier la diode, cathode cote Arduino)
 // On ne peut utiliser pin 20/21 car conflit avec adaptateur USB pour UART0 ???
-#define iBus_RX 19   // vers pin iBus sensor du recepteur Flysky
-#define iBus_TX 18   // vers pin iBus sensor du recepteur Flysky avec diode, cathode coté ESP
+//#define iBus_RX 18   // vers pin iBus sensor du recepteur Flysky
+//#define iBus_TX 19  // vers pin iBus sensor du recepteur Flysky avec diode, cathode coté ESP
+
 //#define pinLed 19
-*/
+
 //----------------------------------------------------------------------------------------------------------------------------
 //  Pour ESP32 OLED 128x64 compil carte WEMOS LOLIN32
 /*
@@ -110,7 +111,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 //  Pour ESP32 ESP32 Dev Kit
-/*
+
 #define GPS_RX_PIN 4           // D1 Brancher le fil Tx du GPS . 
 #define GPS_TX_PIN 2            // D2 Brancher le fil Rx du GPS .
 //#define pinLed 2              // builtin LED du module 32 Dev Kit
@@ -119,10 +120,10 @@
 //#define GSM_TX 19   //  exemple pour ESP32 Dev kit.  vers TX du module GSM SIM800L
 //#define iBus_RX 25   //  exemple pour ESP32 Dev kit. vers pin iBus sensor du recepteur Flysky
 //#define iBus_TX 27   //  exemple pour ESP32 Dev kit. vers pin iBus sensor du recepteur Flysky
-#define iBus_RX 16   // (label RX2) exemple pour ESP32 Dev kit. vers pin iBus sensor du recepteur Flysky
-#define iBus_TX 17   // (label TX2)  exemple pour ESP32 Dev kit. vers pin iBus sensor du recepteur Flysky
+#define iBus_RX 25   // (label RX2) exemple pour ESP32 Dev kit. vers pin iBus sensor du recepteur Flysky
+#define iBus_TX 27   // (label TX2)  exemple pour ESP32 Dev kit. vers pin iBus sensor du recepteur Flysky
 
-*/
+
 // ------------------------------------------------------------------------------------------------
 
 #endif  /* FS_OPTIONS_H */

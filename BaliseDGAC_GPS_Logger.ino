@@ -553,6 +553,7 @@ void setup() {
 
   //connection sur le terrain à un smartphone
   // start WiFi
+  WiFi.begin();
   WiFi.mode(WIFI_AP);
   strcpy(drone_id, preferences.drone_id);
   Serial.print(F("Drone_id trouvé dans preferences:")), Serial.println(drone_id);

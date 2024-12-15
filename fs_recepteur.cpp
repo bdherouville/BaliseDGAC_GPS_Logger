@@ -17,7 +17,8 @@
 // https://www.tranquille-modelisme.fr/balise-dgac-signalement-electronique-a-distance-drone-aeromodelisme.html
 
 // ATTENTION: utilise le timer 0  !!!!!!!!!!!!!!!!
-
+#include "esp_system.h"  // For chip info
+#include "esp_chip_info.h"
 #include "fs_options.h"
 #ifdef fs_RECEPTEUR   // compilation conditionnelle de tout le code récepteur
 #include <byteswap.h>
@@ -321,13 +322,29 @@ static void wifi_sniffer_cb(void *recv_buf, wifi_promiscuous_pkt_type_t type)
             }
             ptr = ptr + (b_tlv->length) + 2;
           }
+          // Wi-Fi information handling for ESP32 and ESP32-C6
+      #if defined(CONFIG_IDF_TARGET_ESP32C6)
+    // ESP32-C6: Adapt fields from esp_wifi_rxctrl_t
+    curBalise.rssi = sniffer->rx_ctrl.rssi;  // Signal strength
+    curBalise.rate = sniffer->rx_ctrl.rate;  // Data rate
 
-          //infos wifi
-          curBalise.rssi = sniffer->rx_ctrl.rssi;
-          curBalise.cwb = sniffer->rx_ctrl.cwb;
-          curBalise.rate = sniffer->rx_ctrl.rate;
+    // Infer bandwidth from channel information
+    if (sniffer->rx_ctrl.second == 0) {
+        curBalise.cwb = 20;  // HT20 (20 MHz)
+    } else {
+        curBalise.cwb = 40;  // HT40 (40 MHz)
+    }
+#else
+    // Original ESP32 code
+    curBalise.rssi = sniffer->rx_ctrl.rssi;
+    curBalise.cwb = sniffer->rx_ctrl.cwb;  // Original channel bandwidth
+    curBalise.rate = sniffer->rx_ctrl.rate;
+#endif
 
-          addBalise() ;  //  rajouter la balise dans la table
+// Add the balise to the table
+addBalise();
+
+
         } //if vendor ok
       }
       index = index + tlv->length + 2;
@@ -365,22 +382,46 @@ bool timerOccurs = false;
 void IRAM_ATTR onTimerRx() {
   timerOccurs = true;
 }
-void handleRecepteur()
-{
+
+
+void handleRecepteur() {
   Serial.println(F("Lancement recepteur"));
-  // couper la liaison avec le GPS (IT ...), ferme filesystem ...
+
+  // Couper la liaison avec le GPS (IT ...), fermer le filesystem ...
   serialGPS.end();
   LittleFS.end();
   modeRecepteur = true;
+
   initialize_wifi_sniffer();
-  timer = timerBegin(0, 80, true);
-  if (timer == NULL) Serial.println("Erreur timerBegin !!");
-  timerAttachInterrupt(timer, &onTimerRx, true);
-  timerAlarmWrite(timer, 1000000, true);
-  timerAlarmEnable(timer);
+
+  // Create a timer, handling differences between ESP32 2.x and 3.x
+  #if ESP_ARDUINO_VERSION_MAJOR >= 3
+    // Code for ESP32 Core 3.x
+    timer = timerBegin(1); // Frequency: 1 Hz (adjust based on desired functionality)
+    if (timer == NULL) {
+      Serial.println("Erreur timerBegin !!");
+      return; // Exit if timer initialization fails
+    }
+    timerAttachInterrupt(timer, &onTimerRx); // Updated function with 2 parameters
+    timerWrite(timer, 1000000); // Set the timer to trigger every 1,000,000 µs (1 second)
+  #else
+    // Code for ESP32 Core 2.x
+    timer = timerBegin(0, 80, true); // Prescaler and edge control
+    if (timer == NULL) {
+      Serial.println("Erreur timerBegin !!");
+      return; // Exit if timer initialization fails
+    }
+    timerAttachInterrupt(timer, &onTimerRx, true); // Attach interrupt (with edge parameter)
+    timerAlarmWrite(timer, 1000000, true); // Set the timer to trigger every 1,000,000 µs (1 second), with auto-reload
+    timerAlarmEnable(timer); // Enable the alarm
+  #endif
+
   Serial.println(F("En attente de trames..."));
+
+  // Call to refresh handling logic
   handleRecepteurRefresh();
 }
+
 
 void loopRecepteur()  // appellé à chaque boucle depuis la boucle void loop()
 {
