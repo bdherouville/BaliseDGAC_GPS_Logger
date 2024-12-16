@@ -48,7 +48,7 @@
 //--------------------------------------------------------------------------------------------------------
 // Si GPS_quectel ou GPS_ublox  est non defini on suppose que le GPS est initialisé et configuré , liaison à 9600 etc ....
 //#define GPS_quectel  //  style Quectel L80  et GPS style base chipset:MediaTek MT3339
-//#define GPS_ublox   // pour Beitian BN-220, BN-180, BN-880 et GPS style base chipset: u-blox M8030-KT 
+#define GPS_ublox   // pour Beitian BN-220, BN-180, BN-880 et GPS style base chipset: u-blox M8030-KT 
 
 //--------------------------------------------------------------------------------------------------------
 //  Options configuration matérielle
@@ -113,7 +113,7 @@
 //  Pour ESP32 ESP32 Dev Kit
 
 #define GPS_RX_PIN 4           // D1 Brancher le fil Tx du GPS . 
-#define GPS_TX_PIN 2            // D2 Brancher le fil Rx du GPS .
+#define GPS_TX_PIN 5            // D2 Brancher le fil Rx du GPS .
 //#define pinLed 2              // builtin LED du module 32 Dev Kit
 //#define pinFactoryReset 15
 //#define GSM_RX 18   //  exemple pour ESP32 Dev kit. vers RX du module GSM SIM800L

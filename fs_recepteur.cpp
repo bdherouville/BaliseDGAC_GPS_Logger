@@ -397,7 +397,7 @@ void handleRecepteur() {
   // Create a timer, handling differences between ESP32 2.x and 3.x
   #if ESP_ARDUINO_VERSION_MAJOR >= 3
     // Code for ESP32 Core 3.x
-    timer = timerBegin(1); // Frequency: 1 Hz (adjust based on desired functionality)
+    timer = timerBegin(1000000); // Timer at 1 MHz resolution
     if (timer == NULL) {
       Serial.println("Erreur timerBegin !!");
       return; // Exit if timer initialization fails
