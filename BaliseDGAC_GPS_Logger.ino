@@ -510,11 +510,16 @@ void setup() {
 #endif
   Serial.printf_P(PSTR("Pin %i sur RX du GPS\nPin %i sur TX du GPS\n"), GPS_TX_PIN, GPS_RX_PIN);
 
+  // Configuration Wifi 
+  WiFi.begin();
+
   // calcul des valeurs par defaut de l'identificateur de la balise et du nom du réseau point d'acces Wifi
   // Ces noms sont basés sur l'adresse MAC mais peuvent être changé par l'utilisateur.
 
   //conversion de l'adresse mac:
   String temp = WiFi.macAddress();
+  Serial.print(F("MAC ADDRESS:"));
+  Serial.println(temp);
   temp.replace(":", "");                //on récupère les 12 caractères après illimination des ":"
   strcpy(&drone_id[18], temp.c_str());  // que on met à la fin du drone_id
   strcpy(factoryPrefs.drone_id, drone_id);
@@ -553,7 +558,7 @@ void setup() {
 
   //connection sur le terrain à un smartphone
   // start WiFi
-  WiFi.begin();
+
   WiFi.mode(WIFI_AP);
   strcpy(drone_id, preferences.drone_id);
   Serial.print(F("Drone_id trouvé dans preferences:")), Serial.println(drone_id);
